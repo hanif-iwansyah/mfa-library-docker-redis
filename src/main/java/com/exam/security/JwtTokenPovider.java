@@ -12,7 +12,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-//@Component
+@Component
 public class JwtTokenPovider {
     private final Key key;
     private final String issuer;

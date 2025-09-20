@@ -1,28 +1,28 @@
 server:
   port: 8182
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/libdb
-    username: libuser
-    password: libpass1234
-    hikari:
-      auto-commit: false
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate.format_sql: true
-      hibernate:
-      jdbc:
-        lob:
-          non_contextual_creation: true
-      show_sql: true
-  data:
-    redis:
-      host: localhost
-      port: 6379
-  cache:
-    type: redis
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/libdb
+#    username: libuser
+#    password: libpass1234
+#    hikari:
+#      auto-commit: false
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate.format_sql: true
+#      hibernate:
+#      jdbc:
+#        lob:
+#          non_contextual_creation: true
+#      show_sql: true
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
+#  cache:
+#    type: redis
 # jwt:
 #   issuer: example-lib
 #   access-token-ttl: 15m

@@ -13,6 +13,7 @@ import com.exam.rbac_jwt_mfa_library.dto.CreateArticleRequest;
 import com.exam.rbac_jwt_mfa_library.dto.UpdateArticleRequest;
 import com.exam.rbac_jwt_mfa_library.repo.ArticleRepository;
 import com.exam.rbac_jwt_mfa_library.repo.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ArticleService {
@@ -30,6 +31,7 @@ public class ArticleService {
         return articleRepo.findByIsPublicTrue();
     }
 
+    @Transactional(rollbackFor = IllegalArgumentException.class)
     public Article create(CreateArticleRequest req, String username) {
         User usr = userRepo.findByUsername(username).orElseThrow();
         Article article = new Article(null, username, username, null, null, null, false);
@@ -43,12 +45,11 @@ public class ArticleService {
     public Article update(Long id, UpdateArticleRequest req, String username, Set<Role> roles) throws AccessDeniedException {
         Article article = articleRepo.findById(id).orElseThrow();
         boolean owner = isOwner(article, username);
-        if (roles.contains(Role.SUPER_ADMIN) || (roles.contains(Role.EDITOR) && owner)
-                || (roles.contains(Role.CONTRIBUTOR) && owner)) {
-                    article.setTitle(req.title());
-                    article.setContent(req.content());
-                    if (req.isPublic() != null) article.setPublic(req.isPublic());
-                    return articleRepo.save(article);
+        if (roles.contains(Role.SUPER_ADMIN) || (roles.contains(Role.EDITOR) && owner) || (roles.contains(Role.CONTRIBUTOR) && owner)) {
+            article.setTitle(req.title());
+            article.setContent(req.content());
+            if (req.isPublic() != null) article.setPublic(req.isPublic());
+            return articleRepo.save(article);
         }
         throw new AccessDeniedException("Not Allowed");
     }
@@ -64,8 +65,7 @@ public class ArticleService {
     }
 
     private boolean isOwner(Article article, String username) {
-        return userRepo.findById(article.getAuthorId()).map(userRepo -> userRepo.getUsername().equals(username))
-                .orElse(false);
+        return userRepo.findById(article.getAuthorId()).map(userRepo -> userRepo.getUsername().equals(username)).orElse(false);
     }
 
 }

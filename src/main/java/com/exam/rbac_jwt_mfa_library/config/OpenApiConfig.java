@@ -13,17 +13,20 @@ public class OpenApiConfig {
         return GroupedOpenApi.builder()
                 .group("public")
                 .pathsToMatch("/api/**")
+                .addOpenApiCustomizer(
+                        openApi -> openApi.setInfo(new io.swagger.v3.oas.models.OpenAPI().getInfo())
+                )
                 .build();
     }
 
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-            .info(
-                new Info()
-                .title("Library API")
-                .version("v1")
-                .description("API documentation for RBAC JWT MFA Library")
+                .info(
+                        new Info()
+                                .title("Library API")
+                                .version("v1")
+                                .description("API documentation for RBAC JWT MFA Library")
                 );
     }
 }
